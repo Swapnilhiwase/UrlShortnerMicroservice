@@ -17,6 +17,8 @@ namespace UrlShortnerMicroservice.Controllers
         {
             _urlShortnerService = urlShortnerService;
         }
+
+       
         /// <summary>
         /// this will provide a short url for given long url
         /// </summary>
@@ -25,16 +27,31 @@ namespace UrlShortnerMicroservice.Controllers
         [HttpPost("generateshortUrl")]
         public async Task<IActionResult> generateShortUrl([FromBody] GenerateShortUrlRequest request)
         {
-           await  _urlShortnerService.ShortenUrlAsync(request.longUrl);
-            return Created();
+            var shortUrl = await _urlShortnerService.ShortenUrlAsync(request.longUrl);
+            GenerateShortUrlResponse generateShortUrlResponse = new GenerateShortUrlResponse();
+            generateShortUrlResponse.longUrl = request.longUrl;
+            generateShortUrlResponse.shortUrl = shortUrl;
+
+            return Created(new Uri(""), generateShortUrlResponse);
         }
 
+
         [HttpPost("getOriginalUrl")]
-        public IActionResult getOriginalUrl([FromBody] GetOriginalRequestUrl request)
+        public async Task<IActionResult> getOriginalUrl([FromBody] GetOriginalRequestUrl request)
         {
-            UrlShortnerService serviceObj;
-            serviceObj.GetOriginalUrlAsync("");
-            return Ok();
+            var longUrlResponse = await _urlShortnerService.GetOriginalUrlAsync(request.shortUrl);
+
+            GetOriginalUrlResponse getOrignalUrlResponse = new GetOriginalUrlResponse();
+            getOrignalUrlResponse.shortUrl = request.shortUrl;
+            getOrignalUrlResponse.longUrl = longUrlResponse;
+
+            if (longUrlResponse == null)
+            {
+                getOrignalUrlResponse.message = "URL not present into the database.";
+            }
+
+
+            return Ok(getOrignalUrlResponse);
         }
     }
 }

@@ -9,7 +9,13 @@ namespace UrlShortnerMicroservice.Data
         /// <summary>
         /// Represent the urlMApping table in database
         /// </summary>
-        public DbSet<UrlMapping> urlMappings { get; set; }
+        public DbSet<UrlMapping> UrlMappings { get; set; }
+
+
+        /// <summary>
+        /// This will configure the database engine used for DbContext.
+        /// </summary>
+        /// <param name="optionsBuilder">Instace of DbContextOptionsBuilder.</param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
 
