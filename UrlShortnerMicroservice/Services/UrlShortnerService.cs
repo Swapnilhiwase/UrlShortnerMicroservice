@@ -5,13 +5,14 @@ namespace UrlShortnerMicroservice.Services
 {
     public class UrlShortnerService : IUrlShortnerService
     {
-
+        private Random _random = new Random();
+        private const string Alphabet = "abcderdghdufjsdhsjsjo65845187f";
         public Task<string> GetOriginalUrlAsync(string shortCode)
         {
             throw new NotImplementedException();
         }
 
-        public Task<string> ShortenUrlAsync(string originalUrl)
+        public async Task<string> ShortenUrlAsync(string originalUrl)
         {
 
            
@@ -19,10 +20,10 @@ namespace UrlShortnerMicroservice.Services
             var shortUrl = "newgen.ly" + shortcode;
 
             var mapping = new UrlMapping();
-            mapping.shortcode=shortUrl();
-            mapping.longUrl = originalUrl();
-           
-            throw new NotImplementedException();
+            mapping.ShortenUrl = shortUrl;
+            mapping.OrignalUrl = originalUrl;
+            
+            var response= await
         }
 
         private string GenerateShortCode(int length = 6)
