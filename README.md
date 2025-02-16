@@ -1,3 +1,1 @@
-#write structure of project here
-UrlShortenerMicroservices
-ShortUrl
+This is a personal project for a URL shortener API.
