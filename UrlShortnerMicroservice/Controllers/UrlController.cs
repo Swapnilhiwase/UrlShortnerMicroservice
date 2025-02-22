@@ -27,12 +27,19 @@ namespace UrlShortnerMicroservice.Controllers
         [HttpPost("generateshortUrl")]
         public async Task<IActionResult> generateShortUrl([FromBody] GenerateShortUrlRequest request)
         {
-            var shortUrl = await _urlShortnerService.ShortenUrlAsync(request.longUrl);
-            GenerateShortUrlResponse generateShortUrlResponse = new GenerateShortUrlResponse();
-            generateShortUrlResponse.longUrl = request.longUrl;
-            generateShortUrlResponse.shortUrl = shortUrl;
+            try
+            {
+                var shortUrl = await _urlShortnerService.ShortenUrlAsync(request.longUrl);
+                GenerateShortUrlResponse generateShortUrlResponse = new GenerateShortUrlResponse();
+                generateShortUrlResponse.longUrl = request.longUrl;
+                generateShortUrlResponse.shortUrl = shortUrl;
 
-            return Created(new Uri(""), generateShortUrlResponse);
+                return CreatedAtAction(nameof(generateShortUrl), generateShortUrlResponse);
+            }
+            catch(Exception ex) 
+            {
+                return StatusCode(500, "Internal server error.Unable to process request"+ ex.Message);
+            }
         }
 
 
